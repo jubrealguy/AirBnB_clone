@@ -22,7 +22,8 @@ class FileStorage:
         return FileStorage.__objects
 
     def new(self, obj):
-        """ sets a new formatted key and pair with the value then store in dictionary """
+        """ sets a new formatted key and pair with
+        the value then store in dictionary """
         k = obj.__class__.__name__ + '.' + obj.id
         FileStorage.__objects[k] = obj
 
