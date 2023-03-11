@@ -10,6 +10,7 @@ import models
 
 class BaseModel:
     """ Public instance attributes """
+
     def __init__(self, *args, **kwargs):
         if kwargs is not None:
             for k, v in kwargs.items():
