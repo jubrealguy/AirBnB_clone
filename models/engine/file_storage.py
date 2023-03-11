@@ -7,6 +7,7 @@ from models.base_model import BaseModel
 import json
 import os
 
+
 class FileStorage:
     """
     This class serializes instances to a JSON file and
@@ -31,22 +32,21 @@ class FileStorage:
         for k, v in FileStorage.__objects.items():
             obj_file[k] = v.to_dict()
 
-        with open(FileStorage.__filepath, 'w') as file:
+        with open(FileStorage.__file_path, 'w') as file:
             json.dump(obj_file, file)
 
     def reload(self):
         """ Deserializes the object (json to dict) """
         data = {}
-        if os.path.isfile(FileSorage.__filepath):
-            with open(FileStorage.__filepath, 'r') as file:
+        if os.path.isfile(FileStorage.__file_path):
+            with open(FileStorage.__file_path, 'r') as file:
                 data = json.load(file)
 
             for k, v in data.items():
                 obj_classname, obj_id = k.split('.')
-                class_name = classes[obj_classname]
+                class_name = FileStorage.classes[obj_classname]
                 obj = class_name(**v)
-                File.__storage.__objects[k] = obj
+                FileStorage.__objects[k] = obj
 
         else:
             return
-            
