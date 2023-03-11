@@ -3,7 +3,6 @@
 Store the dictionary representation to a JSON string in a JSON file
 """
 
-from models.base_model import BaseModel
 import json
 import os
 
@@ -15,7 +14,6 @@ class FileStorage:
     """
     __file_path = "file.json"
     __objects = {}
-    classes = {"BaseModel": BaseModel}
 
     def all(self):
         """ Returns dictionary object """
@@ -33,21 +31,22 @@ class FileStorage:
         for k, v in FileStorage.__objects.items():
             obj_file[k] = v.to_dict()
 
-        with open(FileStorage.__file_path, 'w') as file:
+        with open(FileStorage.__file_path, mode='w') as file:
             json.dump(obj_file, file)
 
     def reload(self):
+        from models.base_model import BaseModel
         """ Deserializes the object (json to dict) """
+        classes = {"BaseModel": BaseModel}
         data = {}
-        if os.path.isfile(FileStorage.__file_path):
+        if os.path.isfile(self.__file_path):
             with open(FileStorage.__file_path, 'r') as file:
                 data = json.load(file)
 
             for k, v in data.items():
                 obj_classname, obj_id = k.split('.')
-                class_name = FileStorage.classes[obj_classname]
+                class_name = classes[obj_classname]
                 obj = class_name(**v)
                 FileStorage.__objects[k] = obj
-
-        else:
-            return
+            else:
+                return
